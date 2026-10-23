@@ -1,0 +1,163 @@
+# 🌾 Farmer BackGuard AI – AI-Powered Safety & Monitoring System for Farmers
+
+**Team ID:** VB26-874-36-0277  
+**Track:** Sustainable Agriculture / Smart Farming  
+**Project Type:** Viswakarma – Project TerraWeed Style
+
+> An affordable, wearable safety monitoring device for lone farmers working in remote agricultural fields.
+
+---
+
+## 📌 Problem Context & User Journey
+
+Farmers often work alone in vast fields without any safety monitoring. Environmental hazards, delayed alerts, and lack of automated safety checks increase risk.
+
+**Key Pain Points:**
+1.  **Working Alone Risk** – Lone farmer at risk without help nearby
+2.  **Environmental Hazards** – Heat, humidity, air exposure
+3.  **Delayed Alerts** – No immediate notification when unsafe condition occurs
+4.  **Manual Safety Checks** – No automated continuous monitoring
+
+**Target Beneficiaries:** Small-scale farmers, agricultural labourers, farm workers in remote fields
+
+**Before-State Flow:**
+`Farmer works alone → Unsafe condition occurs → No alert → Delayed help → Increased risk`
+
+**Current Gap:** Affordable continuous safety monitoring and timely alert system not readily accessible.
+
+**Core Need:** Affordable continuous monitoring, early risk alerts, and timely assistance for farmer safety.
+
+![Problem Context](Problem_Context_Farmer_BackGuard_VB26.png)
+
+---
+
+## 💡 Solution Overview – Farmer BackGuard AI
+
+**Farmer BackGuard AI** is a wearable backpack-based safety device powered by Arduino UNO that continuously monitors environmental and motion data and provides immediate audible alerts via buzzer.
+
+**What it does:**
+- Monitors temperature & humidity via DHT22
+- Detects motion/activity via Motion Sensor
+- Processes data in real-time on Arduino UNO
+- Activates HXD Buzzer + LED when predefined unsafe condition is detected
+- Powered by 3.7V Rechargeable Battery with regulated 5V supply
+
+---
+
+## 🏗️ System Architecture & Block Diagram
+
+### Block Diagram (Vertical Flowchart)
+
+![Electronics Flowchart](Electronics_Flowchart_Vertical_Farmer_BackGuard.png)
+
+**Flow:**
+**Input Sensors:** DHT22 Temperature Sensor + Motion Sensor
+⬇️
+**Processing Unit:** Arduino UNO
+⬇️
+**Alert System:** HXD Buzzer
+**Power Supply:** Rechargeable Battery with voltage regulation
+
+**Working:** Sensors provide input signals to the Arduino UNO. The controller processes the inputs and activates the buzzer when a predefined condition is detected.
+
+### System Architecture & Specs
+
+![System Architecture](System_Architecture_Specs_Farmer_BackGuard.png)
+
+| Parameter | Target Spec | Selected Hardware |
+| :--- | :--- | :--- |
+| Data Sampling Rate | 1Hz interval | ESP32 ADC + DHT22, Gas, Motion |
+| Alert Detection Latency | <2s latency | ESP32 + Buzzer + LED |
+| Continuous Runtime | 24/7 monitoring | Battery + Buck Converter |
+| Core Controller | Real-time loop | ESP32-WROOM-32 / Arduino UNO |
+| Sensors | Temp, Humidity, Gas, Motion | DHT22, MQ2, PIR, Soil Moisture |
+| Communication | <500ms local + wireless | Buzzer local + WiFi MQTT GSM |
+| System Power | <3W | Regulated 5V/3.3V low-power sleep |
+
+**Architecture Rationale:** ESP32 chosen for WiFi, low-power, affordable; Buzzer for immediate local alert without network; Modular design for future AI and wireless.
+
+---
+
+## 🔌 Electronics Schematics
+
+### Circuit Diagram – Combined Breadboard + Schematic
+
+**Controller:** Arduino UNO processes the sensor inputs.  
+**Temperature Sensor:** DHT22 measures ambient temperature and humidity.  
+**Motion Sensor:** Detects movement based on the selected sensor.  
+**Buzzer:** Provides an audible alert when a predefined condition is detected.  
+**Power Supply:** A suitable regulated supply powers the circuit.  
+**Connections:** Sensors connect to the Arduino input pins, and the buzzer connects through a suitable output/driver circuit.
+
+**Working Principle:** The sensors send input signals to the Arduino UNO. The controller checks the programmed conditions and activates the buzzer when the set alert condition is met.
+
+![Electronics Schematics](Electronics_Schematics_Farmer_BackGuard_AI.png)
+
+**Pin Connections:**
+- DHT22 Data → Arduino D2 (with 10kΩ pull-up)
+- Motion Sensor OUT → Arduino D3
+- Buzzer → Arduino D8 via BC547 NPN Transistor + 1kΩ resistor
+- LED Indicator → Arduino D9 via 220Ω resistor
+- Power: 9V Battery → LM7805 → 5V Regulated → Arduino 5V & GND
+
+**Wire Legend:** Red=5V, Black=GND, Yellow=Sensor Data, Orange=Control Output
+
+---
+
+## 📦 BOM & Procurement Sourcing
+
+### Bill of Materials (BOM)
+
+| Component | Purpose |
+| :--- | :--- |
+| Arduino UNO | Main controller |
+| DHT22 Sensor | Temperature and humidity monitoring |
+| Motion Sensor | Motion detection |
+| HXD Buzzer | Audible alert |
+| IRFZ44N Transistor | Switching, if required by the circuit |
+| 3.7V Rechargeable Battery | Portable power source |
+| Breadboard & Jumper Wires | Circuit connections |
+
+![BOM](BOM_Farmer_BackGuard_AI.png)
+
+**Procurement Sourcing:**
+Components are sourced from local electronics stores and online electronics suppliers. Selection is based on affordability, availability, compatibility, and reliability.
+
+---
+
+## 💰 Cost Estimation – Farmer BackGuard AI
+
+| Component / Activity | Estimated Cost (₹) |
+| :--- | ---: |
+| Arduino UNO | 500 |
+| DHT22 Sensor | 250 |
+| Motion Sensor | 200 |
+| Buzzer & Driver Components | 150 |
+| Rechargeable Battery & Voltage Regulator | 450 |
+| Breadboard, Wires & Connectors | 250 |
+| Protective Enclosure & Mounting | 800 |
+| Additional Safety Sensors / Modules | 900 |
+| Assembly & Fabrication | 700 |
+| Testing & Miscellaneous Expenses | 800 |
+| **Total Estimated Project Cost** | **₹5,000** |
+
+*Note: This is a preliminary project budget. Actual prices and additional modules must be verified before procurement. Components already available can be listed separately as existing resources.*
+
+![Cost Estimation](Cost_Estimation_Farmer_BackGuard_AI.png)
+
+---
+
+## ⚙️ Installation & Usage
+
+1.  Assemble components as per schematics
+2.  Upload Arduino code (DHT22 library + threshold logic)
+3.  Power with 3.7V rechargeable battery via 5V regulator
+4.  Mount in protective enclosure on backpack
+5.  Test: Exceed temp threshold or trigger motion → Buzzer should alert
+
+**Sample Logic:**
+```cpp
+if (temperature > 40 || motion == HIGH) {
+  digitalWrite(buzzerPin, HIGH);
+  digitalWrite(ledPin, HIGH);
+}
